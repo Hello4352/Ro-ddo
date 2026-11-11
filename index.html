@@ -2,318 +2,923 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>럭키 로또 추첨</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUCKY LOTTO - THE GRAND FINALE</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* {
+  box-sizing: border-box;
+}
 
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-      color: white;
-      background:
-        radial-gradient(circle at top, #263d70, #0b1020 65%);
-      overflow-x: hidden;
-    }
+:root {
+  --gold: #f5ca70;
+  --light-gold: #fff0bb;
+  --dark: #080b13;
+  --panel: #111827;
+}
 
-    .container {
-      width: 90%;
-      max-width: 650px;
-      padding: 40px 25px;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 25px;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: 24px;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 35%, #243047 0%, #111827 48%, #05070d 100%);
+  color: white;
+  font-family: Arial, "Malgun Gothic", sans-serif;
+  overflow-x: hidden;
+}
 
-    h1 {
-      margin: 0;
-      font-size: 38px;
-      letter-spacing: 3px;
-    }
+.stage {
+  width: min(1240px, 94vw, calc((100svh - 48px) * 16 / 9));
+  aspect-ratio: 16 / 9;
+  max-height: calc(100svh - 48px);
+  min-height: 550px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(20px, 3vw, 42px);
+  text-align: center;
+  overflow: hidden;
+  border: 1px solid #92733d;
+  border-radius: 24px;
+  background:
+    radial-gradient(ellipse at 50% 42%, #253149 0%, #111a2a 45%, #0a0e18 100%);
+  box-shadow:
+    0 0 30px rgba(237, 183, 76, .12),
+    0 0 100px rgba(0, 0, 0, .7),
+    inset 0 0 60px rgba(0, 0, 0, .5);
+}
 
-    .subtitle {
-      margin: 15px 0 35px;
-      color: #b9c8e8;
-      font-size: 15px;
-    }
+/* 장식용 배경 */
+.stage::before,
+.stage::after {
+  content: "";
+  position: absolute;
+  width: 350px;
+  height: 350px;
+  border: 1px solid rgba(245, 202, 112, .13);
+  border-radius: 50%;
+  pointer-events: none;
+}
 
-    .balls {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      max-width: 450px;
-      margin: 0 auto 35px;
-    }
+.stage::before {
+  top: -230px;
+  left: -170px;
+}
 
-    .ball {
-      width: 100%;
-      max-width: 115px;
-      aspect-ratio: 1;
-      margin: auto;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 50%;
-      font-size: 35px;
-      font-weight: bold;
-      color: white;
-      background: #27334c;
-      border: 3px solid rgba(255,255,255,0.2);
-      box-shadow: 0 5px 18px rgba(0,0,0,0.3);
-      transition: background 0.2s, transform 0.2s;
-    }
+.stage::after {
+  right: -180px;
+  bottom: -240px;
+}
 
-    .ball.spinning:not(.locked) {
-      animation: shake 0.18s infinite alternate;
-    }
+.top-bar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+}
 
-    .ball.locked {
-      animation: reveal 0.55s ease;
-      border: 3px solid white;
-      box-shadow: 0 0 25px rgba(255,255,255,0.45);
-    }
+.logo {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: var(--gold);
+}
 
-    /* 번호별 색상 */
-    .yellow { background: #e6aa16; }
-    .blue   { background: #2478d4; }
-    .red    { background: #e64c4c; }
-    .gray   { background: #687383; }
-    .green  { background: #299b68; }
+.guide-button {
+  background: rgba(245, 202, 112, .08);
+  border: 1px solid rgba(245, 202, 112, .5);
+  border-radius: 30px;
+  padding: 11px 20px;
+  color: var(--light-gold);
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: .25s;
+}
 
-    @keyframes shake {
-      from { transform: translateY(-3px) rotate(-4deg); }
-      to   { transform: translateY(3px) rotate(4deg); }
-    }
+.guide-button:hover {
+  background: rgba(245, 202, 112, .2);
+  box-shadow: 0 0 20px rgba(245, 202, 112, .2);
+}
 
-    @keyframes reveal {
-      0% {
-        transform: scale(0.4);
-        opacity: 0;
-      }
-      70% {
-        transform: scale(1.2);
-      }
-      100% {
-        transform: scale(1);
-        opacity: 1;
-      }
-    }
+.main-content {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  margin: auto 0;
+}
 
-    .status {
-      min-height: 28px;
-      margin: 25px 0;
-      font-size: 18px;
-      font-weight: bold;
-      color: #f5d77b;
-    }
+.eyebrow {
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 7px;
+  font-weight: bold;
+}
 
-    button {
-      width: 80%;
-      max-width: 300px;
-      padding: 17px;
-      border: none;
-      border-radius: 50px;
-      background: linear-gradient(135deg, #ffd76a, #f39b27);
-      color: #252525;
-      font-size: 20px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 5px 20px rgba(255, 185, 55, 0.3);
-      transition: 0.2s;
-    }
+h1 {
+  margin: 16px 0 10px;
+  color: var(--light-gold);
+  font-size: clamp(38px, 5.3vw, 66px);
+  font-weight: 900;
+  letter-spacing: 3px;
+  text-shadow:
+    0 0 15px rgba(255, 199, 91, .45),
+    0 0 45px rgba(255, 174, 42, .2);
+}
 
-    button:hover:not(:disabled) {
-      transform: scale(1.05);
-      box-shadow: 0 0 25px rgba(255, 190, 70, 0.6);
-    }
+.subtitle {
+  margin: 0;
+  color: #b9c5d8;
+  font-size: clamp(13px, 1.5vw, 18px);
+  letter-spacing: 2px;
+}
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
+.countdown {
+  height: 62px;
+  margin-top: 12px;
+  font-size: 48px;
+  font-weight: 900;
+  color: var(--gold);
+  text-shadow: 0 0 25px #f5b942;
+}
 
-    .info {
-      margin-top: 25px;
-      color: #9daecb;
-      font-size: 13px;
-    }
+.balls {
+  width: min(900px, 92%);
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: clamp(8px, 2vw, 24px);
+}
 
-    @media (max-width: 400px) {
-      h1 { font-size: 30px; }
-      .balls { gap: 12px; }
-      .ball { font-size: 27px; }
-    }
-  </style>
+.ball {
+  width: 100%;
+  max-width: 125px;
+  aspect-ratio: 1;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: 2px solid #68758b;
+  background: radial-gradient(circle at 35% 30%, #44516a, #182236 75%);
+  color: #dce5f4;
+  font-size: clamp(23px, 4vw, 43px);
+  font-weight: 900;
+  box-shadow:
+    inset 0 0 15px rgba(0,0,0,.65),
+    0 10px 20px rgba(0,0,0,.3);
+}
+
+.ball.spinning {
+  animation: spinning .12s infinite alternate;
+}
+
+.ball.revealed {
+  color: #33200a;
+  border: 3px solid #fff2bc;
+  background:
+    radial-gradient(circle at 34% 27%, #fffbdc, #f5ce70 48%, #b77b1e 100%);
+  box-shadow:
+    0 0 15px #f5ca70,
+    0 0 40px rgba(245, 202, 112, .65);
+  animation: reveal .65s ease-out;
+}
+
+.ball.last {
+  box-shadow:
+    0 0 25px #fff1ac,
+    0 0 65px #ffb72d,
+    0 0 100px rgba(255, 174, 42, .45);
+}
+
+@keyframes spinning {
+  from { transform: translateY(-3px) rotate(-5deg); }
+  to { transform: translateY(3px) rotate(5deg); }
+}
+
+@keyframes reveal {
+  0% {
+    transform: scale(.1) rotate(-30deg);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.status {
+  min-height: 35px;
+  margin: 20px 0;
+  color: var(--gold);
+  font-weight: bold;
+  font-size: clamp(16px, 2vw, 23px);
+  letter-spacing: 1px;
+}
+
+.start-button {
+  min-width: 280px;
+  padding: 18px 38px;
+  border: none;
+  border-radius: 50px;
+  background: linear-gradient(120deg, #fff0ad, #f2c35a, #c88a28);
+  color: #271a06;
+  font-size: 19px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+  box-shadow:
+    0 0 20px rgba(245, 195, 90, .3),
+    0 5px 20px rgba(0,0,0,.3);
+  transition: .25s;
+}
+
+.start-button:hover:not(:disabled) {
+  transform: scale(1.04);
+  box-shadow: 0 0 35px rgba(245, 195, 90, .65);
+}
+
+.start-button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+
+.bottom-text {
+  position: relative;
+  z-index: 1;
+  color: #78869c;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+/* 게임 안내 팝업 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 20;
+  inset: 0;
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,.82);
+  backdrop-filter: blur(8px);
+}
+
+.modal.open {
+  display: flex;
+}
+
+.modal-box {
+  width: min(650px, 100%);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 30px;
+  border: 1px solid var(--gold);
+  border-radius: 20px;
+  background: linear-gradient(145deg, #202c43, #0d1421);
+  box-shadow: 0 0 50px rgba(245,202,112,.15);
+  text-align: left;
+}
+
+.modal-box h2 {
+  margin-top: 0;
+  text-align: center;
+  color: var(--gold);
+  font-size: 27px;
+}
+
+.game-card {
+  margin: 14px 0;
+  padding: 17px;
+  border: 1px solid rgba(245,202,112,.22);
+  border-radius: 12px;
+  background: rgba(255,255,255,.04);
+}
+
+.game-card h3 {
+  margin: 0 0 8px;
+  color: var(--light-gold);
+  font-size: 18px;
+}
+
+.game-card p {
+  margin: 0;
+  color: #c2ccdd;
+  line-height: 1.7;
+  white-space: pre-wrap;
+}
+
+.close-button {
+  display: block;
+  margin: 22px auto 0;
+  padding: 12px 35px;
+  border: 1px solid var(--gold);
+  border-radius: 30px;
+  background: transparent;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#fireworks {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  pointer-events: none;
+}
+
+/* 작은 화면 대응 */
+@media (max-width: 700px) {
+  body {
+    padding: 10px;
+  }
+
+  .stage {
+    width: 96vw;
+    min-height: 700px;
+    max-height: none;
+    aspect-ratio: auto;
+    padding: 22px 14px;
+  }
+
+  .top-bar {
+    flex-direction: column;
+  }
+
+  .balls {
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 380px;
+    gap: 15px;
+  }
+
+  .ball {
+    width: 85%;
+  }
+
+  .start-button {
+    min-width: 0;
+    width: 90%;
+  }
+
+  .eyebrow {
+    letter-spacing: 3px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <div class="container">
+<canvas id="fireworks"></canvas>
 
-    <h1>LUCKY LOTTO</h1>
-    <p class="subtitle">45개의 숫자 중 행운의 6개를 뽑아라!</p>
+<div class="stage">
 
-    <div class="balls">
-      <div class="ball">--</div>
-      <div class="ball">--</div>
-      <div class="ball">--</div>
-      <div class="ball">--</div>
-      <div class="ball">--</div>
-      <div class="ball">--</div>
+  <header class="top-bar">
+    <div class="logo">★ LUCKY LOTTO ★</div>
+
+    <button class="guide-button" onclick="openGuide()">
+      다른 게임 안내
+    </button>
+  </header>
+
+  <main class="main-content">
+
+    <div class="eyebrow" id="eyebrow"></div>
+
+    <h1 id="title"></h1>
+
+    <p class="subtitle" id="subtitle"></p>
+
+    <div class="countdown" id="countdown"></div>
+
+    <div class="balls" id="balls">
+      <div class="ball">?</div>
+      <div class="ball">?</div>
+      <div class="ball">?</div>
+      <div class="ball">?</div>
+      <div class="ball">?</div>
+      <div class="ball">?</div>
     </div>
 
-    <div class="status" id="status">
-      행운의 번호를 뽑아보세요!
-    </div>
+    <div class="status" id="status"></div>
 
-    <button id="drawButton" onclick="startDraw()">
-      LOTTO START
+    <button
+      class="start-button"
+      id="startButton"
+      onclick="startDraw()">
+      추첨 시작
     </button>
 
-    <div class="info">
-      1~45 사이의 번호 6개를 중복 없이 추첨합니다.
-    </div>
+  </main>
+
+  <footer class="bottom-text" id="footer"></footer>
+
+</div>
+
+<!-- 다른 게임 안내 팝업 -->
+<div class="modal" id="guideModal">
+  <div class="modal-box" role="dialog" aria-modal="true"
+       aria-labelledby="guideTitle">
+
+    <h2 id="guideTitle"></h2>
+
+    <div id="gameList"></div>
+
+    <button class="close-button" onclick="closeGuide()">
+      닫기
+    </button>
 
   </div>
+</div>
 
-  <script>
-    const balls = document.querySelectorAll(".ball");
-    const button = document.getElementById("drawButton");
-    const statusText = document.getElementById("status");
+<script>
 
-    let isDrawing = false;
+/* ==========================================
+   1. 문구 및 설정 수정 영역
+   이 부분만 수정하면 화면의 문구가 바뀜
+========================================== */
 
-    // 편향 없이 0부터 max-1까지의 정수를 생성
-    function secureRandomInt(max) {
-      const range = 0x100000000;
-      const limit = Math.floor(range / max) * max;
-      const array = new Uint32Array(1);
-      let value;
+const CONFIG = {
 
-      do {
-        crypto.getRandomValues(array);
-        value = array[0];
-      } while (value >= limit);
+  // 메인 화면 문구
+  eyebrow: "THE GRAND FINALE",
+  title: "THE FINAL DRAW",
+  subtitle: "축제의 마지막 순간, 행운의 주인공이 탄생한다.",
+  footer: "ONE LAST CHANCE · ONE LUCKY WINNER",
 
-      return value % max;
+  // 버튼과 안내 문구
+  startText: "운명의 추첨을 시작한다",
+  drawingText: "운명의 번호가 공개됩니다...",
+  lastNumberText: "마지막 번호... 운명의 순간!",
+  finishText: "축하합니다! 오늘의 행운의 번호가 탄생했습니다!",
+
+  // 게임 안내 문구
+  guideTitle: "OTHER GAMES",
+  
+  // 추첨 시간 설정
+  countdownSeconds: 5,
+  revealInterval: 3600,
+  lastNumberPause: 2000,
+
+  // 다른 게임 설명
+  games: [
+    {
+      name: "게임 1",
+      description: "이곳에 첫 번째 게임의 설명을 입력하세요."
+    },
+    {
+      name: "게임 2",
+      description: "이곳에 두 번째 게임의 설명을 입력하세요."
+    },
+    {
+      name: "게임 3",
+      description: "이곳에 세 번째 게임의 설명을 입력하세요."
     }
+  ]
+};
 
-    // 45개 숫자를 섞은 뒤 앞의 6개 선택
-    function drawNumbers() {
-      const numbers = Array.from(
-        { length: 45 },
-        (_, i) => i + 1
-      );
 
-      // Fisher-Yates 셔플
-      for (let i = numbers.length - 1; i > 0; i--) {
-        const j = secureRandomInt(i + 1);
+/* ==========================================
+   2. 화면 문구 적용
+========================================== */
 
-        [numbers[i], numbers[j]] =
-          [numbers[j], numbers[i]];
+document.getElementById("eyebrow").textContent = CONFIG.eyebrow;
+document.getElementById("title").textContent = CONFIG.title;
+document.getElementById("subtitle").textContent = CONFIG.subtitle;
+document.getElementById("footer").textContent = CONFIG.footer;
+document.getElementById("startButton").textContent = CONFIG.startText;
+document.getElementById("guideTitle").textContent = CONFIG.guideTitle;
+
+
+/* ==========================================
+   3. 암호학적 난수 생성
+========================================== */
+
+// 0부터 max-1까지 균등한 정수 생성
+function secureRandomInt(max) {
+
+  const range = 0x100000000;
+  const limit = Math.floor(range / max) * max;
+
+  const array = new Uint32Array(1);
+  let value;
+
+  do {
+    crypto.getRandomValues(array);
+    value = array[0];
+  } while (value >= limit);
+
+  return value % max;
+}
+
+
+// 45개 숫자를 섞고 앞의 6개 추출
+function drawNumbers() {
+
+  const numbers = Array.from(
+    { length: 45 },
+    (_, index) => index + 1
+  );
+
+  // Fisher-Yates 셔플
+  for (let i = numbers.length - 1; i > 0; i--) {
+
+    const j = secureRandomInt(i + 1);
+
+    [numbers[i], numbers[j]] =
+      [numbers[j], numbers[i]];
+
+  }
+
+  return numbers.slice(0, 6);
+}
+
+
+/* ==========================================
+   4. 공통 변수
+========================================== */
+
+const balls = document.querySelectorAll(".ball");
+const statusText = document.getElementById("status");
+const countdownText = document.getElementById("countdown");
+const startButton = document.getElementById("startButton");
+
+let isDrawing = false;
+let resultNumbers = [];
+
+
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
+/* ==========================================
+   5. 번호 표시
+========================================== */
+
+function showNumber(ball, number) {
+
+  ball.textContent = String(number).padStart(2, "0");
+
+  ball.classList.remove("spinning");
+  ball.classList.add("revealed");
+
+}
+
+
+/* ==========================================
+   6. 로또 추첨 시작
+========================================== */
+
+async function startDraw() {
+
+  if (isDrawing) return;
+
+  // 안전한 난수 기능 지원 여부 검사
+  if (!window.crypto ||
+      typeof crypto.getRandomValues !== "function") {
+
+    statusText.textContent =
+      "안전한 난수 기능을 사용할 수 없습니다. HTTPS 환경에서 실행해주세요.";
+
+    return;
+  }
+
+  isDrawing = true;
+
+  startButton.disabled = true;
+  startButton.textContent = "추첨 진행 중...";
+
+  resultNumbers = drawNumbers();
+
+  // 기존 번호 초기화
+  balls.forEach(ball => {
+
+    ball.textContent = "?";
+    ball.className = "ball";
+
+  });
+
+  statusText.textContent = "추첨 장치를 가동합니다...";
+  countdownText.textContent = "";
+
+  // 빠르게 번호가 돌아가는 연출
+  const spinTimer = setInterval(() => {
+
+    balls.forEach((ball, index) => {
+
+      if (!ball.classList.contains("revealed")) {
+
+        ball.textContent = String(
+          secureRandomInt(45) + 1
+        ).padStart(2, "0");
+
+        ball.classList.add("spinning");
+
       }
 
-      return numbers.slice(0, 6);
-    }
+    });
 
-    // 번호별 색상 설정
-    function getColor(number) {
-      if (number <= 10) return "yellow";
-      if (number <= 20) return "blue";
-      if (number <= 30) return "red";
-      if (number <= 40) return "gray";
-      return "green";
-    }
+  }, 75);
 
-    // 번호 표시
-    function showNumber(ball, number) {
-      ball.textContent = String(number).padStart(2, "0");
 
-      ball.classList.remove(
-        "yellow", "blue", "red", "gray", "green"
-      );
+  try {
 
-      ball.classList.add(getColor(number));
-    }
+    // 5초 카운트다운
+    for (
+      let i = CONFIG.countdownSeconds;
+      i > 0;
+      i--
+    ) {
 
-    // 시간 지연 함수
-    function wait(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    // 추첨 시작
-    async function startDraw() {
-      if (isDrawing) return;
-
-      if (!window.crypto ||
-          typeof crypto.getRandomValues !== "function") {
-        statusText.textContent =
-          "안전한 난수 기능을 사용할 수 없습니다.";
-        return;
-      }
-
-      isDrawing = true;
-      button.disabled = true;
-      button.textContent = "DRAWING...";
-
-      // 기존 번호 초기화
-      balls.forEach(ball => {
-        ball.textContent = "--";
-        ball.className = "ball spinning";
-      });
-
-      statusText.textContent = "번호를 섞고 있습니다...";
-
-      // 실제 당첨 번호는 추첨 시작 시 한 번만 결정
-      const result = drawNumbers();
-
-      // 긴박감을 위한 숫자 회전 애니메이션
-      const spinTimer = setInterval(() => {
-        balls.forEach(ball => {
-          if (!ball.classList.contains("locked")) {
-            const randomNumber =
-              secureRandomInt(45) + 1;
-
-            showNumber(ball, randomNumber);
-          }
-        });
-      }, 65);
-
-      // 번호를 하나씩 공개
-      for (let i = 0; i < 6; i++) {
-        statusText.textContent =
-          `${i + 1}번째 행운의 번호 공개 중...`;
-
-        await wait(950);
-
-        showNumber(balls[i], result[i]);
-        balls[i].classList.add("locked");
-        balls[i].classList.remove("spinning");
-
-        await wait(300);
-      }
-
-      clearInterval(spinTimer);
+      countdownText.textContent = i;
 
       statusText.textContent =
-        "🎉 추첨 완료! 행운의 번호가 공개되었습니다!";
+        "행운의 순간이 다가오고 있습니다...";
 
-      button.disabled = false;
-      button.textContent = "다시 추첨하기";
+      await wait(1000);
 
-      isDrawing = false;
     }
-  </script>
+
+    countdownText.textContent = "START!";
+
+    // 첫 번째부터 여섯 번째까지 하나씩 공개
+    for (let i = 0; i < 6; i++) {
+
+      if (i === 5) {
+
+        statusText.textContent =
+          CONFIG.lastNumberText;
+
+        // 마지막 번호 공개 전 추가 긴장감
+        await wait(CONFIG.lastNumberPause);
+
+      } else {
+
+        statusText.textContent =
+          `${i + 1}번째 행운의 번호를 공개합니다...`;
+
+      }
+
+      await wait(CONFIG.revealInterval);
+
+      showNumber(balls[i], resultNumbers[i]);
+
+      // 마지막 공 특별 효과
+      if (i === 5) {
+        balls[i].classList.add("last");
+      }
+
+      await wait(400);
+
+    }
+
+    countdownText.textContent = "";
+
+    statusText.textContent = CONFIG.finishText;
+
+    startButton.textContent = "다시 추첨하기";
+
+    // 축하 폭죽
+    launchFireworks();
+
+  } catch (error) {
+
+    statusText.textContent =
+      "추첨 중 오류가 발생했습니다.";
+
+    console.error(error);
+
+  } finally {
+
+    clearInterval(spinTimer);
+
+    startButton.disabled = false;
+
+    if (statusText.textContent !== CONFIG.finishText) {
+      startButton.textContent = CONFIG.startText;
+    }
+
+    isDrawing = false;
+
+  }
+
+}
+
+
+/* ==========================================
+   7. 다른 게임 안내
+========================================== */
+
+function openGuide() {
+
+  const modal = document.getElementById("guideModal");
+  const gameList = document.getElementById("gameList");
+
+  gameList.replaceChildren();
+
+  CONFIG.games.forEach(game => {
+
+    const card = document.createElement("div");
+    card.className = "game-card";
+
+    const heading = document.createElement("h3");
+    heading.textContent = game.name;
+
+    const description = document.createElement("p");
+    description.textContent = game.description;
+
+    card.appendChild(heading);
+    card.appendChild(description);
+
+    gameList.appendChild(card);
+
+  });
+
+  modal.classList.add("open");
+
+}
+
+
+function closeGuide() {
+
+  document.getElementById("guideModal")
+    .classList.remove("open");
+
+}
+
+
+// 팝업 바깥을 눌러도 닫히도록 설정
+document.getElementById("guideModal")
+  .addEventListener("click", event => {
+
+    if (event.target.id === "guideModal") {
+      closeGuide();
+    }
+
+  });
+
+
+// ESC 키로 닫기
+document.addEventListener("keydown", event => {
+
+  if (event.key === "Escape") {
+    closeGuide();
+  }
+
+});
+
+
+/* ==========================================
+   8. 피날레 폭죽 효과
+========================================== */
+
+function launchFireworks() {
+
+  const canvas = document.getElementById("fireworks");
+  const ctx = canvas.getContext("2d");
+
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = window.innerWidth * dpr;
+  canvas.height = window.innerHeight * dpr;
+
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+  const colors = [
+    "#ffd76d",
+    "#fff2bb",
+    "#ff9e35",
+    "#ffffff",
+    "#f3c454"
+  ];
+
+  let particles = [];
+  const startTime = performance.now();
+
+  // 여러 차례 폭죽 발사
+  function createBurst() {
+
+    const x = window.innerWidth *
+      (0.2 + Math.random() * 0.6);
+
+    const y = window.innerHeight *
+      (0.15 + Math.random() * 0.4);
+
+    const color = colors[
+      Math.floor(Math.random() * colors.length)
+    ];
+
+    for (let i = 0; i < 65; i++) {
+
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 6;
+
+      particles.push({
+
+        x,
+        y,
+
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+
+        life: 1,
+        size: 2 + Math.random() * 3,
+        color
+
+      });
+
+    }
+
+  }
+
+
+  createBurst();
+
+  const secondBurst = setTimeout(createBurst, 450);
+  const thirdBurst = setTimeout(createBurst, 950);
+
+
+  function animate() {
+
+    const elapsed = performance.now() - startTime;
+
+    ctx.clearRect(
+      0,
+      0,
+      window.innerWidth,
+      window.innerHeight
+    );
+
+    particles = particles.filter(particle => particle.life > 0);
+
+    particles.forEach(particle => {
+
+      particle.x += particle.vx;
+      particle.y += particle.vy;
+
+      particle.vy += 0.045;
+      particle.vx *= 0.99;
+
+      particle.life -= 0.009;
+
+      ctx.globalAlpha = Math.max(0, particle.life);
+      ctx.fillStyle = particle.color;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        particle.x,
+        particle.y,
+        particle.size,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fill();
+
+    });
+
+    ctx.globalAlpha = 1;
+
+    if (elapsed < 4000 || particles.length > 0) {
+
+      requestAnimationFrame(animate);
+
+    } else {
+
+      clearTimeout(secondBurst);
+      clearTimeout(thirdBurst);
+
+      ctx.clearRect(
+        0,
+        0,
+        window.innerWidth,
+        window.innerHeight
+      );
+
+    }
+
+  }
+
+  requestAnimationFrame(animate);
+
+}
+
+</script>
 
 </body>
 </html>
