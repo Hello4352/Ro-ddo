@@ -4,378 +4,285 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LUCKY LOTTO - THE GRAND FINALE</title>
+<title>THE FINAL DRAW</title>
 
 <style>
-* {
-  box-sizing: border-box;
-}
+* { box-sizing:border-box; }
 
 :root {
-  --gold: #f5ca70;
-  --light-gold: #fff0bb;
-  --dark: #080b13;
-  --panel: #111827;
+  --gold:#f5ca70;
+  --light:#fff0bb;
 }
 
 body {
-  margin: 0;
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: 24px;
-  display: grid;
-  place-items: center;
-  background:
-    radial-gradient(ellipse at 50% 35%, #243047 0%, #111827 48%, #05070d 100%);
-  color: white;
-  font-family: Arial, "Malgun Gothic", sans-serif;
-  overflow-x: hidden;
+  margin:0;
+  min-height:100vh;
+  padding:20px;
+  display:grid;
+  place-items:center;
+  background:radial-gradient(ellipse at center,#26344c,#080b13 75%);
+  color:white;
+  font-family:Arial,"Malgun Gothic",sans-serif;
 }
 
 .stage {
-  width: min(1240px, 94vw, calc((100svh - 48px) * 16 / 9));
-  aspect-ratio: 16 / 9;
-  max-height: calc(100svh - 48px);
-  min-height: 550px;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: clamp(20px, 3vw, 42px);
-  text-align: center;
-  overflow: hidden;
-  border: 1px solid #92733d;
-  border-radius: 24px;
-  background:
-    radial-gradient(ellipse at 50% 42%, #253149 0%, #111a2a 45%, #0a0e18 100%);
-  box-shadow:
-    0 0 30px rgba(237, 183, 76, .12),
-    0 0 100px rgba(0, 0, 0, .7),
-    inset 0 0 60px rgba(0, 0, 0, .5);
-}
-
-/* 장식용 배경 */
-.stage::before,
-.stage::after {
-  content: "";
-  position: absolute;
-  width: 350px;
-  height: 350px;
-  border: 1px solid rgba(245, 202, 112, .13);
-  border-radius: 50%;
-  pointer-events: none;
+  width:min(1240px,94vw,calc((100svh - 40px)*16/9));
+  aspect-ratio:16/9;
+  min-height:550px;
+  max-height:calc(100svh - 40px);
+  padding:clamp(20px,3vw,42px);
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  border:1px solid #92733d;
+  border-radius:22px;
+  background:radial-gradient(ellipse at center,#253149,#0a0e18 75%);
+  box-shadow:0 0 60px #000;
 }
 
 .stage::before {
-  top: -230px;
-  left: -170px;
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(245,202,112,.12);
+  border-radius:15px;
+  pointer-events:none;
 }
 
-.stage::after {
-  right: -180px;
-  bottom: -240px;
-}
-
-.top-bar {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 15px;
+header {
+  z-index:1;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
 }
 
 .logo {
-  font-size: 17px;
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: var(--gold);
+  color:var(--gold);
+  font-weight:900;
+  letter-spacing:4px;
+  font-size:17px;
 }
 
-.guide-button {
-  background: rgba(245, 202, 112, .08);
-  border: 1px solid rgba(245, 202, 112, .5);
-  border-radius: 30px;
-  padding: 11px 20px;
-  color: var(--light-gold);
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: .25s;
+button {
+  cursor:pointer;
+  font-weight:bold;
 }
 
-.guide-button:hover {
-  background: rgba(245, 202, 112, .2);
-  box-shadow: 0 0 20px rgba(245, 202, 112, .2);
+.guide,.sound {
+  padding:11px 18px;
+  border:1px solid #92733d;
+  border-radius:30px;
+  background:#172237;
+  color:var(--light);
 }
 
-.main-content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  margin: auto 0;
+.main {
+  z-index:1;
+  margin:auto 0;
 }
 
 .eyebrow {
-  color: var(--gold);
-  font-size: 13px;
-  letter-spacing: 7px;
-  font-weight: bold;
+  color:var(--gold);
+  letter-spacing:7px;
+  font-size:13px;
+  font-weight:bold;
 }
 
 h1 {
-  margin: 16px 0 10px;
-  color: var(--light-gold);
-  font-size: clamp(38px, 5.3vw, 66px);
-  font-weight: 900;
-  letter-spacing: 3px;
-  text-shadow:
-    0 0 15px rgba(255, 199, 91, .45),
-    0 0 45px rgba(255, 174, 42, .2);
+  margin:15px 0;
+  font-size:clamp(38px,5.5vw,68px);
+  color:var(--light);
+  text-shadow:0 0 30px #dca63e;
+  letter-spacing:3px;
 }
 
 .subtitle {
-  margin: 0;
-  color: #b9c5d8;
-  font-size: clamp(13px, 1.5vw, 18px);
-  letter-spacing: 2px;
+  color:#bac5d8;
+  letter-spacing:2px;
+  font-size:clamp(13px,1.5vw,18px);
 }
 
 .countdown {
-  height: 62px;
-  margin-top: 12px;
-  font-size: 48px;
-  font-weight: 900;
-  color: var(--gold);
-  text-shadow: 0 0 25px #f5b942;
+  height:65px;
+  margin-top:15px;
+  font-size:50px;
+  font-weight:900;
+  color:var(--gold);
+  text-shadow:0 0 25px #f5b942;
 }
 
 .balls {
-  width: min(900px, 92%);
-  margin: 20px auto;
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: clamp(8px, 2vw, 24px);
+  width:min(900px,95%);
+  margin:20px auto;
+  display:grid;
+  grid-template-columns:repeat(6,1fr);
+  gap:clamp(8px,2vw,24px);
 }
 
 .ball {
-  width: 100%;
-  max-width: 125px;
-  aspect-ratio: 1;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  border: 2px solid #68758b;
-  background: radial-gradient(circle at 35% 30%, #44516a, #182236 75%);
-  color: #dce5f4;
-  font-size: clamp(23px, 4vw, 43px);
-  font-weight: 900;
-  box-shadow:
-    inset 0 0 15px rgba(0,0,0,.65),
-    0 10px 20px rgba(0,0,0,.3);
+  width:100%;
+  max-width:125px;
+  aspect-ratio:1;
+  margin:auto;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:50%;
+  border:2px solid #68758b;
+  background:radial-gradient(circle at 35% 30%,#44516a,#182236);
+  color:#e0e6f0;
+  font-size:clamp(23px,4vw,43px);
+  font-weight:900;
+  box-shadow:inset 0 0 15px #000;
 }
 
-.ball.spinning {
-  animation: spinning .12s infinite alternate;
+.spinning {
+  animation:spin .12s infinite alternate;
 }
 
-.ball.revealed {
-  color: #33200a;
-  border: 3px solid #fff2bc;
-  background:
-    radial-gradient(circle at 34% 27%, #fffbdc, #f5ce70 48%, #b77b1e 100%);
-  box-shadow:
-    0 0 15px #f5ca70,
-    0 0 40px rgba(245, 202, 112, .65);
-  animation: reveal .65s ease-out;
+.revealed {
+  color:#33200a;
+  border:3px solid #fff2bc;
+  background:radial-gradient(circle at 34% 27%,#fffbdc,#f5ce70 48%,#b77b1e);
+  box-shadow:0 0 35px #f5ca70;
+  animation:reveal .65s;
 }
 
-.ball.last {
-  box-shadow:
-    0 0 25px #fff1ac,
-    0 0 65px #ffb72d,
-    0 0 100px rgba(255, 174, 42, .45);
+.last {
+  box-shadow:0 0 30px #fff1ac,0 0 80px #ffb72d;
 }
 
-@keyframes spinning {
-  from { transform: translateY(-3px) rotate(-5deg); }
-  to { transform: translateY(3px) rotate(5deg); }
+@keyframes spin {
+  from {transform:translateY(-3px) rotate(-5deg);}
+  to {transform:translateY(3px) rotate(5deg);}
 }
 
 @keyframes reveal {
-  0% {
-    transform: scale(.1) rotate(-30deg);
-    opacity: 0;
-  }
-  70% {
-    transform: scale(1.25);
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
+  0% {transform:scale(.1);opacity:0;}
+  70% {transform:scale(1.25);}
+  100% {transform:scale(1);opacity:1;}
 }
 
 .status {
-  min-height: 35px;
-  margin: 20px 0;
-  color: var(--gold);
-  font-weight: bold;
-  font-size: clamp(16px, 2vw, 23px);
-  letter-spacing: 1px;
+  min-height:35px;
+  margin:20px 0;
+  color:var(--gold);
+  font-size:clamp(16px,2vw,23px);
+  font-weight:bold;
 }
 
-.start-button {
-  min-width: 280px;
-  padding: 18px 38px;
-  border: none;
-  border-radius: 50px;
-  background: linear-gradient(120deg, #fff0ad, #f2c35a, #c88a28);
-  color: #271a06;
-  font-size: 19px;
-  font-weight: 900;
-  letter-spacing: 1px;
-  cursor: pointer;
-  box-shadow:
-    0 0 20px rgba(245, 195, 90, .3),
-    0 5px 20px rgba(0,0,0,.3);
-  transition: .25s;
+.start {
+  padding:19px 45px;
+  min-width:290px;
+  border:0;
+  border-radius:50px;
+  background:linear-gradient(120deg,#fff0ad,#f2c35a,#c88a28);
+  color:#271a06;
+  font-size:19px;
+  font-weight:900;
+  box-shadow:0 0 30px #c38b32;
+  transition:.25s;
 }
 
-.start-button:hover:not(:disabled) {
-  transform: scale(1.04);
-  box-shadow: 0 0 35px rgba(245, 195, 90, .65);
+.start:hover:not(:disabled) {
+  transform:scale(1.04);
+  box-shadow:0 0 45px #f5ca70;
 }
 
-.start-button:disabled {
-  opacity: .5;
-  cursor: not-allowed;
+.start:disabled {opacity:.5;}
+
+footer {
+  z-index:1;
+  color:#78869c;
+  font-size:11px;
+  letter-spacing:3px;
 }
 
-.bottom-text {
-  position: relative;
-  z-index: 1;
-  color: #78869c;
-  font-size: 11px;
-  letter-spacing: 2px;
-}
-
-/* 게임 안내 팝업 */
 .modal {
-  display: none;
-  position: fixed;
-  z-index: 20;
-  inset: 0;
-  padding: 20px;
-  align-items: center;
-  justify-content: center;
-  background: rgba(0,0,0,.82);
-  backdrop-filter: blur(8px);
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:20;
+  background:#000d;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
 }
 
-.modal.open {
-  display: flex;
-}
+.modal.open {display:flex;}
 
 .modal-box {
-  width: min(650px, 100%);
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 30px;
-  border: 1px solid var(--gold);
-  border-radius: 20px;
-  background: linear-gradient(145deg, #202c43, #0d1421);
-  box-shadow: 0 0 50px rgba(245,202,112,.15);
-  text-align: left;
+  width:min(600px,100%);
+  max-height:85vh;
+  overflow:auto;
+  padding:28px;
+  border:1px solid var(--gold);
+  border-radius:20px;
+  background:#172237;
 }
 
 .modal-box h2 {
-  margin-top: 0;
-  text-align: center;
-  color: var(--gold);
-  font-size: 27px;
+  color:var(--gold);
+  text-align:center;
 }
 
 .game-card {
-  margin: 14px 0;
-  padding: 17px;
-  border: 1px solid rgba(245,202,112,.22);
-  border-radius: 12px;
-  background: rgba(255,255,255,.04);
+  padding:15px;
+  margin:12px 0;
+  border:1px solid #66532e;
+  border-radius:10px;
+  text-align:left;
 }
 
-.game-card h3 {
-  margin: 0 0 8px;
-  color: var(--light-gold);
-  font-size: 18px;
-}
+.game-card h3 {color:var(--light);}
 
 .game-card p {
-  margin: 0;
-  color: #c2ccdd;
-  line-height: 1.7;
-  white-space: pre-wrap;
+  color:#c4ccda;
+  line-height:1.7;
+  white-space:pre-wrap;
 }
 
-.close-button {
-  display: block;
-  margin: 22px auto 0;
-  padding: 12px 35px;
-  border: 1px solid var(--gold);
-  border-radius: 30px;
-  background: transparent;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
+.close {
+  display:block;
+  margin:20px auto 0;
+  padding:12px 35px;
+  background:transparent;
+  border:1px solid var(--gold);
+  color:white;
+  border-radius:30px;
 }
 
 #fireworks {
-  position: fixed;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 30;
-  pointer-events: none;
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:30;
+  pointer-events:none;
 }
 
-/* 작은 화면 대응 */
-@media (max-width: 700px) {
-  body {
-    padding: 10px;
-  }
-
+@media(max-width:700px) {
+  body {padding:8px;}
   .stage {
-    width: 96vw;
-    min-height: 700px;
-    max-height: none;
-    aspect-ratio: auto;
-    padding: 22px 14px;
+    width:96vw;
+    min-height:700px;
+    max-height:none;
+    aspect-ratio:auto;
+    padding:20px 12px;
   }
-
-  .top-bar {
-    flex-direction: column;
-  }
-
+  header {flex-direction:column;}
   .balls {
-    grid-template-columns: repeat(3, 1fr);
-    max-width: 380px;
-    gap: 15px;
+    grid-template-columns:repeat(3,1fr);
+    max-width:380px;
+    gap:15px;
   }
-
-  .ball {
-    width: 85%;
-  }
-
-  .start-button {
-    min-width: 0;
-    width: 90%;
-  }
-
-  .eyebrow {
-    letter-spacing: 3px;
-  }
+  .ball {width:85%;}
+  .start {width:90%;min-width:0;}
+  .eyebrow {letter-spacing:3px;}
 }
 </style>
 </head>
@@ -386,245 +293,437 @@ h1 {
 
 <div class="stage">
 
-  <header class="top-bar">
-    <div class="logo">★ LUCKY LOTTO ★</div>
+<header>
+  <div class="logo">★ LUCKY LOTTO ★</div>
 
-    <button class="guide-button" onclick="openGuide()">
+  <div style="display:flex;gap:10px;">
+    <button class="guide" onclick="openGuide()">
       다른 게임 안내
     </button>
-  </header>
-
-  <main class="main-content">
-
-    <div class="eyebrow" id="eyebrow"></div>
-
-    <h1 id="title"></h1>
-
-    <p class="subtitle" id="subtitle"></p>
-
-    <div class="countdown" id="countdown"></div>
-
-    <div class="balls" id="balls">
-      <div class="ball">?</div>
-      <div class="ball">?</div>
-      <div class="ball">?</div>
-      <div class="ball">?</div>
-      <div class="ball">?</div>
-      <div class="ball">?</div>
-    </div>
-
-    <div class="status" id="status"></div>
-
-    <button
-      class="start-button"
-      id="startButton"
-      onclick="startDraw()">
-      추첨 시작
+    <button class="sound" id="soundButton" onclick="toggleSound()">
+      🔊 SOUND ON
     </button>
+  </div>
+</header>
 
-  </main>
+<main class="main">
 
-  <footer class="bottom-text" id="footer"></footer>
+  <div class="eyebrow" id="eyebrow"></div>
+
+  <h1 id="title"></h1>
+
+  <p class="subtitle" id="subtitle"></p>
+
+  <div class="countdown" id="countdown"></div>
+
+  <div class="balls" id="balls">
+    <div class="ball">?</div>
+    <div class="ball">?</div>
+    <div class="ball">?</div>
+    <div class="ball">?</div>
+    <div class="ball">?</div>
+    <div class="ball">?</div>
+  </div>
+
+  <div class="status" id="status"></div>
+
+  <button class="start" id="startButton" onclick="startDraw()">
+    추첨 시작
+  </button>
+
+</main>
+
+<footer id="footer"></footer>
 
 </div>
 
-<!-- 다른 게임 안내 팝업 -->
 <div class="modal" id="guideModal">
-  <div class="modal-box" role="dialog" aria-modal="true"
-       aria-labelledby="guideTitle">
-
+  <div class="modal-box">
     <h2 id="guideTitle"></h2>
-
     <div id="gameList"></div>
-
-    <button class="close-button" onclick="closeGuide()">
-      닫기
-    </button>
-
+    <button class="close" onclick="closeGuide()">닫기</button>
   </div>
 </div>
 
 <script>
 
-/* ==========================================
-   1. 문구 및 설정 수정 영역
-   이 부분만 수정하면 화면의 문구가 바뀜
-========================================== */
+/* ======================================
+   1. 직접 수정하는 설정
+====================================== */
 
 const CONFIG = {
 
-  // 메인 화면 문구
-  eyebrow: "THE GRAND FINALE",
-  title: "THE FINAL DRAW",
-  subtitle: "축제의 마지막 순간, 행운의 주인공이 탄생한다.",
-  footer: "ONE LAST CHANCE · ONE LUCKY WINNER",
+  eyebrow:"THE GRAND FINALE",
+  title:"THE FINAL DRAW",
+  subtitle:"축제의 마지막 순간, 행운의 주인공이 탄생한다.",
+  footer:"ONE LAST CHANCE · ONE LUCKY WINNER",
 
-  // 버튼과 안내 문구
-  startText: "운명의 추첨을 시작한다",
-  drawingText: "운명의 번호가 공개됩니다...",
-  lastNumberText: "마지막 번호... 운명의 순간!",
-  finishText: "축하합니다! 오늘의 행운의 번호가 탄생했습니다!",
+  startText:"운명의 추첨을 시작한다",
+  drawingText:"운명의 번호가 공개됩니다...",
+  lastNumberText:"마지막 번호... 운명의 순간!",
+  finishText:"오늘의 주인공이 탄생했습니다!",
 
-  // 게임 안내 문구
-  guideTitle: "OTHER GAMES",
-  
-  // 추첨 시간 설정
-  countdownSeconds: 3,
-  revealInterval: 2600,
-  lastNumberPause: 2000,
+  guideTitle:"OTHER GAMES",
 
-  // 다른 게임 설명
-  games: [
+  countdownSeconds:5,
+  revealInterval:3600,
+  lastNumberPause:3000,
+
+  games:[
     {
-      name: "게임 1",
-      description: "이곳에 첫 번째 게임의 설명을 입력하세요."
+      name:"게임 1",
+      description:"첫 번째 게임의 설명을 입력하세요."
     },
     {
-      name: "게임 2",
-      description: "이곳에 두 번째 게임의 설명을 입력하세요."
+      name:"게임 2",
+      description:"두 번째 게임의 설명을 입력하세요."
     },
     {
-      name: "게임 3",
-      description: "이곳에 세 번째 게임의 설명을 입력하세요."
+      name:"게임 3",
+      description:"세 번째 게임의 설명을 입력하세요."
     }
   ]
 };
 
 
-/* ==========================================
+/* ======================================
    2. 화면 문구 적용
-========================================== */
+====================================== */
 
-document.getElementById("eyebrow").textContent = CONFIG.eyebrow;
-document.getElementById("title").textContent = CONFIG.title;
-document.getElementById("subtitle").textContent = CONFIG.subtitle;
-document.getElementById("footer").textContent = CONFIG.footer;
-document.getElementById("startButton").textContent = CONFIG.startText;
-document.getElementById("guideTitle").textContent = CONFIG.guideTitle;
+document.getElementById("eyebrow").textContent=CONFIG.eyebrow;
+document.getElementById("title").textContent=CONFIG.title;
+document.getElementById("subtitle").textContent=CONFIG.subtitle;
+document.getElementById("footer").textContent=CONFIG.footer;
+document.getElementById("startButton").textContent=CONFIG.startText;
+document.getElementById("guideTitle").textContent=CONFIG.guideTitle;
 
 
-/* ==========================================
-   3. 암호학적 난수 생성
-========================================== */
+/* ======================================
+   3. 사운드 시스템
+   외부 음원 없이 직접 소리 생성
+====================================== */
 
-// 0부터 max-1까지 균등한 정수 생성
-function secureRandomInt(max) {
+let audioContext=null;
+let masterGain=null;
+let soundEnabled=true;
+let ambientNodes=[];
+let ambientPlaying=false;
+let spinInterval=null;
 
-  const range = 0x100000000;
-  const limit = Math.floor(range / max) * max;
+function initAudio() {
 
-  const array = new Uint32Array(1);
+  if(audioContext) return;
+
+  const AudioContextClass =
+    window.AudioContext || window.webkitAudioContext;
+
+  if(!AudioContextClass) {
+    soundEnabled=false;
+    return;
+  }
+
+  audioContext=new AudioContextClass();
+
+  masterGain=audioContext.createGain();
+  masterGain.gain.value=0.75;
+  masterGain.connect(audioContext.destination);
+
+}
+
+function tone(frequency,duration,type="sine",volume=0.2,delay=0) {
+
+  if(!soundEnabled || !audioContext) return;
+
+  const now=audioContext.currentTime+delay;
+
+  const osc=audioContext.createOscillator();
+  const gain=audioContext.createGain();
+
+  osc.type=type;
+  osc.frequency.setValueAtTime(frequency,now);
+
+  gain.gain.setValueAtTime(0.001,now);
+  gain.gain.exponentialRampToValueAtTime(volume,now+0.025);
+  gain.gain.exponentialRampToValueAtTime(0.001,now+duration);
+
+  osc.connect(gain);
+  gain.connect(masterGain);
+
+  osc.start(now);
+  osc.stop(now+duration+0.05);
+
+}
+
+
+// 웅장한 배경음악
+function startAmbient() {
+
+  if(!soundEnabled || !audioContext || ambientPlaying) return;
+
+  ambientPlaying=true;
+
+  const notes=[55,82.41,110,164.81];
+
+  notes.forEach((frequency,index)=>{
+
+    const osc=audioContext.createOscillator();
+    const gain=audioContext.createGain();
+    const filter=audioContext.createBiquadFilter();
+
+    osc.type=index===0?"triangle":"sine";
+    osc.frequency.value=frequency;
+
+    filter.type="lowpass";
+    filter.frequency.value=350;
+
+    gain.gain.value=index===0?0.055:0.025;
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(masterGain);
+
+    osc.start();
+
+    ambientNodes.push(osc);
+
+  });
+
+}
+
+
+// 배경음악 종료
+function stopAmbient() {
+
+  ambientNodes.forEach(osc=>{
+    try {osc.stop();} catch(e){}
+  });
+
+  ambientNodes=[];
+  ambientPlaying=false;
+
+}
+
+
+// 카운트다운 효과음
+function countSound() {
+
+  tone(880,0.18,"sine",0.25);
+  tone(440,0.22,"triangle",0.12,0.04);
+
+}
+
+
+// 번호 공개 효과음
+function revealSound() {
+
+  tone(110,0.35,"sine",0.4);
+  tone(440,0.15,"triangle",0.16,0.03);
+  tone(660,0.2,"sine",0.1,0.08);
+
+}
+
+
+// 회전 기계음
+function spinSound() {
+
+  if(!soundEnabled) return;
+
+  tone(190+Math.random()*100,0.045,"square",0.035);
+
+}
+
+
+// 마지막 번호 긴장 효과음
+function suspenseSound() {
+
+  tone(220,0.8,"sawtooth",0.08);
+  tone(330,1.2,"sine",0.12,0.5);
+  tone(440,1.5,"sine",0.13,1.1);
+  tone(660,1.5,"sine",0.14,1.8);
+
+}
+
+
+// 최종 피날레 팡파르
+function finaleSound() {
+
+  const notes=[
+    [392,0],
+    [523.25,0.3],
+    [659.25,0.6],
+    [783.99,1.0],
+    [1046.5,1.5],
+    [783.99,2.0],
+    [1046.5,2.5],
+    [1318.5,3.0]
+  ];
+
+  notes.forEach(([frequency,delay])=>{
+    tone(frequency,0.75,"triangle",0.19,delay);
+  });
+
+  // 묵직한 피날레 저음
+  tone(65.4,2.5,"sine",0.35,0);
+  tone(130.8,2, "sine",0.2,0.1);
+
+}
+
+
+// 소리 ON/OFF
+function toggleSound() {
+
+  initAudio();
+
+  soundEnabled=!soundEnabled;
+
+  document.getElementById("soundButton").textContent=
+    soundEnabled?"🔊 SOUND ON":"🔇 SOUND OFF";
+
+  if(!soundEnabled) {
+
+    masterGain.gain.setTargetAtTime(
+      0,audioContext.currentTime,0.04
+    );
+
+    stopAmbient();
+
+  } else {
+
+    masterGain.gain.setTargetAtTime(
+      0.75,audioContext.currentTime,0.05
+    );
+
+    if(isDrawing) startAmbient();
+
+  }
+
+}
+
+
+/* ======================================
+   4. 균등한 무작위 번호 추첨
+====================================== */
+
+function randomInt(max) {
+
+  const range=0x100000000;
+  const limit=Math.floor(range/max)*max;
+  const array=new Uint32Array(1);
   let value;
 
   do {
     crypto.getRandomValues(array);
-    value = array[0];
-  } while (value >= limit);
+    value=array[0];
+  } while(value>=limit);
 
-  return value % max;
+  return value%max;
+
 }
 
-
-// 45개 숫자를 섞고 앞의 6개 추출
 function drawNumbers() {
 
-  const numbers = Array.from(
-    { length: 45 },
-    (_, index) => index + 1
+  const numbers=Array.from(
+    {length:45},
+    (_,i)=>i+1
   );
 
-  // Fisher-Yates 셔플
-  for (let i = numbers.length - 1; i > 0; i--) {
+  for(let i=44;i>0;i--) {
 
-    const j = secureRandomInt(i + 1);
+    const j=randomInt(i+1);
 
-    [numbers[i], numbers[j]] =
-      [numbers[j], numbers[i]];
+    [numbers[i],numbers[j]]=
+    [numbers[j],numbers[i]];
 
   }
 
-  return numbers.slice(0, 6);
+  return numbers.slice(0,6);
+
 }
 
 
-/* ==========================================
-   4. 공통 변수
-========================================== */
+/* ======================================
+   5. 공통 변수
+====================================== */
 
-const balls = document.querySelectorAll(".ball");
-const statusText = document.getElementById("status");
-const countdownText = document.getElementById("countdown");
-const startButton = document.getElementById("startButton");
+const balls=document.querySelectorAll(".ball");
 
-let isDrawing = false;
-let resultNumbers = [];
+const statusText=document.getElementById("status");
+const countdownText=document.getElementById("countdown");
+const startButton=document.getElementById("startButton");
 
+let isDrawing=false;
+let resultNumbers=[];
 
 function wait(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise(resolve=>setTimeout(resolve,ms));
 }
 
 
-/* ==========================================
-   5. 번호 표시
-========================================== */
+/* ======================================
+   6. 번호 공개
+====================================== */
 
-function showNumber(ball, number) {
+function showNumber(ball,number,isLast=false) {
 
-  ball.textContent = String(number).padStart(2, "0");
+  ball.textContent=String(number).padStart(2,"0");
 
-  ball.classList.remove("spinning");
-  ball.classList.add("revealed");
+  ball.className="ball revealed";
+
+  if(isLast) ball.classList.add("last");
 
 }
 
 
-/* ==========================================
-   6. 로또 추첨 시작
-========================================== */
+/* ======================================
+   7. 로또 추첨
+====================================== */
 
 async function startDraw() {
 
-  if (isDrawing) return;
+  if(isDrawing) return;
 
-  // 안전한 난수 기능 지원 여부 검사
-  if (!window.crypto ||
-      typeof crypto.getRandomValues !== "function") {
+  if(!window.crypto ||
+     typeof crypto.getRandomValues!=="function") {
 
-    statusText.textContent =
-      "안전한 난수 기능을 사용할 수 없습니다. HTTPS 환경에서 실행해주세요.";
+    statusText.textContent=
+      "HTTPS 환경에서 실행해주세요.";
 
     return;
+
   }
 
-  isDrawing = true;
+  initAudio();
 
-  startButton.disabled = true;
-  startButton.textContent = "추첨 진행 중...";
+  if(audioContext.state==="suspended") {
+    await audioContext.resume();
+  }
 
-  resultNumbers = drawNumbers();
+  isDrawing=true;
 
-  // 기존 번호 초기화
-  balls.forEach(ball => {
+  startButton.disabled=true;
+  startButton.textContent="추첨 진행 중...";
 
-    ball.textContent = "?";
-    ball.className = "ball";
+  resultNumbers=drawNumbers();
 
+  balls.forEach(ball=>{
+    ball.textContent="?";
+    ball.className="ball";
   });
 
-  statusText.textContent = "추첨 장치를 가동합니다...";
-  countdownText.textContent = "";
+  countdownText.textContent="";
+  statusText.textContent="추첨 장치를 가동합니다...";
 
-  // 빠르게 번호가 돌아가는 연출
-  const spinTimer = setInterval(() => {
+  if(soundEnabled) startAmbient();
 
-    balls.forEach((ball, index) => {
+  // 회전 애니메이션
+  const spinTimer=setInterval(()=>{
 
-      if (!ball.classList.contains("revealed")) {
+    balls.forEach(ball=>{
 
-        ball.textContent = String(
-          secureRandomInt(45) + 1
-        ).padStart(2, "0");
+      if(!ball.classList.contains("revealed")) {
+
+        ball.textContent=
+          String(randomInt(45)+1).padStart(2,"0");
 
         ball.classList.add("spinning");
 
@@ -632,119 +731,117 @@ async function startDraw() {
 
     });
 
-  }, 75);
+    spinSound();
 
+  },160);
 
   try {
 
-    // 5초 카운트다운
-    for (
-      let i = CONFIG.countdownSeconds;
-      i > 0;
-      i--
-    ) {
+    // 카운트다운
+    for(let i=CONFIG.countdownSeconds;i>0;i--) {
 
-      countdownText.textContent = i;
+      countdownText.textContent=i;
 
-      statusText.textContent =
-        "행운의 순간이 다가오고 있습니다...";
+      statusText.textContent=
+        "운명의 순간이 다가옵니다...";
+
+      countSound();
 
       await wait(1000);
 
     }
 
-    countdownText.textContent = "START!";
+    countdownText.textContent="START!";
 
-    // 첫 번째부터 여섯 번째까지 하나씩 공개
-    for (let i = 0; i < 6; i++) {
+    tone(660,0.6,"triangle",0.25);
+    tone(880,0.8,"sine",0.18,0.2);
 
-      if (i === 5) {
+    // 6개 번호 순차 공개
+    for(let i=0;i<6;i++) {
 
-        statusText.textContent =
-          CONFIG.lastNumberText;
+      if(i===5) {
 
-        // 마지막 번호 공개 전 추가 긴장감
+        statusText.textContent=CONFIG.lastNumberText;
+
+        suspenseSound();
+
         await wait(CONFIG.lastNumberPause);
 
       } else {
 
-        statusText.textContent =
-          `${i + 1}번째 행운의 번호를 공개합니다...`;
+        statusText.textContent=
+          `${i+1}번째 행운의 번호 공개`;
 
       }
 
       await wait(CONFIG.revealInterval);
 
-      showNumber(balls[i], resultNumbers[i]);
+      showNumber(balls[i],resultNumbers[i],i===5);
 
-      // 마지막 공 특별 효과
-      if (i === 5) {
-        balls[i].classList.add("last");
-      }
+      revealSound();
 
-      await wait(400);
+      await wait(500);
 
     }
 
-    countdownText.textContent = "";
+    countdownText.textContent="";
+    statusText.textContent=CONFIG.finishText;
 
-    statusText.textContent = CONFIG.finishText;
+    startButton.textContent="다시 추첨하기";
 
-    startButton.textContent = "다시 추첨하기";
+    stopAmbient();
 
-    // 축하 폭죽
+    finaleSound();
     launchFireworks();
 
-  } catch (error) {
-
-    statusText.textContent =
-      "추첨 중 오류가 발생했습니다.";
+  } catch(error) {
 
     console.error(error);
+    statusText.textContent="추첨 중 오류가 발생했습니다.";
 
   } finally {
 
     clearInterval(spinTimer);
 
-    startButton.disabled = false;
+    if(soundEnabled) stopAmbient();
 
-    if (statusText.textContent !== CONFIG.finishText) {
-      startButton.textContent = CONFIG.startText;
+    startButton.disabled=false;
+
+    if(statusText.textContent!==CONFIG.finishText) {
+      startButton.textContent=CONFIG.startText;
     }
 
-    isDrawing = false;
+    isDrawing=false;
 
   }
 
 }
 
 
-/* ==========================================
-   7. 다른 게임 안내
-========================================== */
+/* ======================================
+   8. 다른 게임 안내
+====================================== */
 
 function openGuide() {
 
-  const modal = document.getElementById("guideModal");
-  const gameList = document.getElementById("gameList");
+  const modal=document.getElementById("guideModal");
+  const gameList=document.getElementById("gameList");
 
   gameList.replaceChildren();
 
-  CONFIG.games.forEach(game => {
+  CONFIG.games.forEach(game=>{
 
-    const card = document.createElement("div");
-    card.className = "game-card";
+    const card=document.createElement("div");
+    card.className="game-card";
 
-    const heading = document.createElement("h3");
-    heading.textContent = game.name;
+    const title=document.createElement("h3");
+    title.textContent=game.name;
 
-    const description = document.createElement("p");
-    description.textContent = game.description;
+    const description=document.createElement("p");
+    description.textContent=game.description;
 
-    card.appendChild(heading);
-    card.appendChild(description);
-
-    gameList.appendChild(card);
+    card.append(title,description);
+    gameList.append(card);
 
   });
 
@@ -752,53 +849,41 @@ function openGuide() {
 
 }
 
-
 function closeGuide() {
-
-  document.getElementById("guideModal")
-    .classList.remove("open");
-
+  document.getElementById("guideModal").classList.remove("open");
 }
 
-
-// 팝업 바깥을 눌러도 닫히도록 설정
 document.getElementById("guideModal")
-  .addEventListener("click", event => {
+.addEventListener("click",event=>{
 
-    if (event.target.id === "guideModal") {
-      closeGuide();
-    }
+  if(event.target.id==="guideModal") closeGuide();
 
-  });
+});
 
+document.addEventListener("keydown",event=>{
 
-// ESC 키로 닫기
-document.addEventListener("keydown", event => {
-
-  if (event.key === "Escape") {
-    closeGuide();
-  }
+  if(event.key==="Escape") closeGuide();
 
 });
 
 
-/* ==========================================
-   8. 피날레 폭죽 효과
-========================================== */
+/* ======================================
+   9. 폭죽 효과
+====================================== */
 
 function launchFireworks() {
 
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
+  const canvas=document.getElementById("fireworks");
+  const ctx=canvas.getContext("2d");
 
-  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const dpr=Math.min(window.devicePixelRatio||1,2);
 
-  canvas.width = window.innerWidth * dpr;
-  canvas.height = window.innerHeight * dpr;
+  canvas.width=window.innerWidth*dpr;
+  canvas.height=window.innerHeight*dpr;
 
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
 
-  const colors = [
+  const colors=[
     "#ffd76d",
     "#fff2bb",
     "#ff9e35",
@@ -806,37 +891,30 @@ function launchFireworks() {
     "#f3c454"
   ];
 
-  let particles = [];
-  const startTime = performance.now();
+  let particles=[];
+  const startTime=performance.now();
 
-  // 여러 차례 폭죽 발사
   function createBurst() {
 
-    const x = window.innerWidth *
-      (0.2 + Math.random() * 0.6);
+    const x=window.innerWidth*(0.2+Math.random()*0.6);
+    const y=window.innerHeight*(0.15+Math.random()*0.4);
 
-    const y = window.innerHeight *
-      (0.15 + Math.random() * 0.4);
-
-    const color = colors[
-      Math.floor(Math.random() * colors.length)
+    const color=colors[
+      Math.floor(Math.random()*colors.length)
     ];
 
-    for (let i = 0; i < 65; i++) {
+    for(let i=0;i<65;i++) {
 
-      const angle = Math.random() * Math.PI * 2;
-      const speed = 2 + Math.random() * 6;
+      const angle=Math.random()*Math.PI*2;
+      const speed=2+Math.random()*6;
 
       particles.push({
 
-        x,
-        y,
-
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-
-        life: 1,
-        size: 2 + Math.random() * 3,
+        x,y,
+        vx:Math.cos(angle)*speed,
+        vy:Math.sin(angle)*speed,
+        life:1,
+        size:2+Math.random()*3,
         color
 
       });
@@ -845,70 +923,46 @@ function launchFireworks() {
 
   }
 
-
   createBurst();
 
-  const secondBurst = setTimeout(createBurst, 450);
-  const thirdBurst = setTimeout(createBurst, 950);
-
+  setTimeout(createBurst,450);
+  setTimeout(createBurst,950);
+  setTimeout(createBurst,1500);
 
   function animate() {
 
-    const elapsed = performance.now() - startTime;
+    const elapsed=performance.now()-startTime;
 
-    ctx.clearRect(
-      0,
-      0,
-      window.innerWidth,
-      window.innerHeight
-    );
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 
-    particles = particles.filter(particle => particle.life > 0);
+    particles=particles.filter(p=>p.life>0);
 
-    particles.forEach(particle => {
+    particles.forEach(p=>{
 
-      particle.x += particle.vx;
-      particle.y += particle.vy;
+      p.x+=p.vx;
+      p.y+=p.vy;
+      p.vy+=0.045;
+      p.vx*=0.99;
+      p.life-=0.009;
 
-      particle.vy += 0.045;
-      particle.vx *= 0.99;
-
-      particle.life -= 0.009;
-
-      ctx.globalAlpha = Math.max(0, particle.life);
-      ctx.fillStyle = particle.color;
+      ctx.globalAlpha=Math.max(0,p.life);
+      ctx.fillStyle=p.color;
 
       ctx.beginPath();
-
-      ctx.arc(
-        particle.x,
-        particle.y,
-        particle.size,
-        0,
-        Math.PI * 2
-      );
-
+      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
       ctx.fill();
 
     });
 
-    ctx.globalAlpha = 1;
+    ctx.globalAlpha=1;
 
-    if (elapsed < 4000 || particles.length > 0) {
+    if(elapsed<4500||particles.length>0) {
 
       requestAnimationFrame(animate);
 
     } else {
 
-      clearTimeout(secondBurst);
-      clearTimeout(thirdBurst);
-
-      ctx.clearRect(
-        0,
-        0,
-        window.innerWidth,
-        window.innerHeight
-      );
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 
     }
 
